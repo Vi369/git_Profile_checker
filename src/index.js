@@ -1,13 +1,18 @@
 // api url
-
 const apiUrl = "https://api.github.com/users/"
+const loadingSpinner = document.querySelector("#loadingSpinner");
 
 const getUserDeatails = async(username)=>{
+    loadingSpinner.style.display = "block"; // loading spinner on 
     const responce = await fetch(apiUrl + username)
-    const data = await responce.json();
+        const data = await responce.json();
+        if(data!== null ){
+            loadingSpinner.style.display = "none"; // loading spinner off
+        }
 
+// card 
 document.querySelector("#card").innerHTML = `
-<div id="card" class="max-w-sm rounded overflow-hidden shadow-lg">
+<div class="max-w-sm rounded overflow-hidden shadow-lg">
     <!-- User Image -->
     <img class="w-full rounded-xl" src="${data.avatar_url}" alt="user git profile">
 
@@ -16,26 +21,30 @@ document.querySelector("#card").innerHTML = `
         <h1 class="font-bold text-xl mb-2">Name: ${data.name}</h1>
         <p class=" text-base">Bio: ${data.bio}</p>
     </div>
-
-    <!-- Followers/Following/Public Repos Info -->
-    <div id="user-info" class="px-6 py-4">
-        <ul>
-            <li><strong>Followers:</strong> ${data.followers}</li>
-            <li><strong>Following:</strong> ${data.following}</li>
-            <li><strong>Public Repos:</strong> ${data.public_repos}</li>
-        </ul>
-    </div>
 </div>`;
 
+// old reporsitory
 document.querySelector("#oldRepo").innerHTML = `
 <!-- Old Repos Section -->
-        <h2 class="font-bold hover:underline text-xl mb-2 text-center">Old Repositories</h2>
+        <h2 class="font-bold text-orange-600 text-xl mb-2 text-center"> <strong>Public Repos: </strong>  ${data.public_repos} :) Click and visit</h2>
         <div id="repos"
-        class=" flex flex-wrap gap-4 h-auto">
+        class=" flex flex-wrap gap-4 ">
 `
-   
+// user follewers and following info 
+document.querySelector('#user-info').innerHTML = `
+<!-- Followers/Following/Public Repos Info -->
+    <ul class = "flex items-center justify-evenly">
+        <li><strong>
+        <a href="#followersDiv" class = "hover: underline hover:text-orange-500">Followers:</a></strong> ${data.followers}</li>
+        <li><strong>
+        <a href="#followingDiv" class = " hover: underline hover:text-orange-500">Following:
+        </a></strong> ${data.following}</li>
+    </ul>`
     getRepos(username)
+
 }
+// getuserDetails function end here 
+
 
 // getRepos function definition 
 const getRepos = async(username)=>{
@@ -43,7 +52,6 @@ const getRepos = async(username)=>{
     const repos = document.getElementById('repos');
     const responce = await fetch(apiUrl + username + '/repos')
     const data = await responce.json();
-    const classList = 
     data.forEach(
         (item)=>{
             const div = document.createElement('div');
@@ -58,6 +66,13 @@ const getRepos = async(username)=>{
     )
 
 }
+
+
+// Serch when press enter key 
+document.addEventListener("keydown", e=>{
+    if(e.key==="Enter") handleSubmit()
+})
+
 
 const handleSubmit =()=>{
     const inputValue = document.getElementById('search');
