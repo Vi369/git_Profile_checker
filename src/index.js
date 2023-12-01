@@ -35,9 +35,9 @@ document.querySelector('#user-info').innerHTML = `
 <!-- Followers/Following/Public Repos Info -->
     <ul class = "flex items-center justify-evenly">
         <li><strong>
-        <a href="#followersDiv" class = "hover: underline hover:text-orange-500">Followers:</a></strong> ${data.followers}</li>
+        <a href="#" class = "hover: underline hover:text-orange-500">Followers:</a></strong> ${data.followers}</li>
         <li><strong>
-        <a href="#followingDiv" class = " hover: underline hover:text-orange-500">Following:
+        <a href="#" class = " hover: underline hover:text-orange-500">Following:
         </a></strong> ${data.following}</li>
     </ul>`
     getRepos(username)
